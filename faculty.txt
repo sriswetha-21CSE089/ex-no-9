@@ -1,0 +1,83 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package com.mycompany.pattern;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Vishnu
+ */
+public class faculty
+{
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException
+    {
+        FileOutputStream fo=new FileOutputStream("faculty.txt");
+        ObjectOutputStream obj=new ObjectOutputStream(fo);
+        System.out.println("enter no of faculties:");
+        Scanner o=new Scanner(System.in);
+        int no=o.nextInt();
+         faculty1 f[]=new faculty1[no];
+        for(int i=0;i<no;i++)
+        {
+            System.out.println("enter code:");
+            int co=o.nextInt();
+            System.out.println("enter name:");
+            String na=o.next();
+            System.out.println("enter department:");
+            String de=o.next();
+            System.out.println("enter position:");
+            String po=o.next();
+            f[i]=new faculty1( co,na, de, po);
+            obj.writeObject(f[i]);
+            obj.flush();
+        }
+        FileInputStream fi=new FileInputStream("faculty.txt");
+        ObjectInputStream obj1=new ObjectInputStream(fi);
+        System.out.println("enter faculty code to search");
+        int key=o.nextInt();
+        faculty1 f1;
+        while(no>0)
+        {
+            f1=(faculty1)obj1.readObject();
+            if(f1.code==key)
+            {
+                System.out.println("name:"+f1.name);
+                System.out.println("department:"+f1.dept);
+                System.out.println("position:"+f1.pos);
+            }
+            no--;
+        }
+        fo.close();
+        obj.close();   
+        
+    } 
+}
+class faculty1 implements Serializable
+{
+    int code;
+    String name;
+    String dept;
+    String pos;
+    faculty1(int c,String n,String d,String p)
+    {
+        code=c;
+        name=n;
+        dept=d;
+        pos=p;
+    }
+    public String toString()
+    {
+       return "name:"+name+"department:"+dept+"position:"+pos;
+       
+    }
+}
